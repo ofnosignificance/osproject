@@ -1,13 +1,14 @@
 NAME := osproject
-CXX := i686-elf-g++
-CXXFLAGS := -ffreestanding -O2 -Wall -Wextra -nostdlib -fno-exceptions -fno-rtti
+CXX := i686-elf-gcc
+CXXFLAGS := -ffreestanding -O2 -Wall -Wextra -nostdlib -fno-exceptions
 AS := nasm
 ASFLAGS := -f elf
 LDFLAGS := 
 
 SRC_DIR := src
 BUILD_DIR := dst
-OBJS := $(BUILD_DIR)/kernel_main.cpp.o \
+OBJS := $(BUILD_DIR)/kernel_main.c.o \
+	$(BUILD_DIR)/random_gen.c.o \
         $(BUILD_DIR)/boot.o
 
 all: $(NAME).bin
@@ -15,8 +16,11 @@ all: $(NAME).bin
 $(NAME).bin: $(OBJS)
 	$(CXX) -T linker.ld -o $(NAME).bin $(CXXFLAGS) $(OBJS) -lgcc
 
-$(BUILD_DIR)/kernel_main.cpp.o: $(SRC_DIR)/kernel/kernel_main.cpp
-	$(CXX) -c $(SRC_DIR)/kernel/kernel_main.cpp $(CXXFLAGS) -o $(BUILD_DIR)/kernel_main.cpp.o
+$(BUILD_DIR)/kernel_main.c.o: $(SRC_DIR)/kernel/kernel_main.c $(SRC_DIR)/kernel/kernel_main.h
+	$(CXX) -c $(SRC_DIR)/kernel/kernel_main.c $(CXXFLAGS) -o $(BUILD_DIR)/kernel_main.c.o
+
+$(BUILD_DIR)/random_gen.c.o: $(SRC_DIR)/kernel/random_gen.c $(SRC_DIR)/kernel/random_gen.h
+	$(CXX) -c $(SRC_DIR)/kernel/random_gen.c $(CXXFLAGS) -o $(BUILD_DIR)/random_gen.c.o
 
 $(BUILD_DIR)/boot.o: $(SRC_DIR)/boot.s
 	$(AS) $(ASFLAGS) $(SRC_DIR)/boot.s -o $(BUILD_DIR)/boot.o
