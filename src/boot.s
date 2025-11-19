@@ -1,5 +1,4 @@
 ;; boot.s
-
 MBALIGN equ 1 << 0
 MEMINFO equ 1 << 1
 MBFLAGS equ MBALIGN | MEMINFO
