@@ -1,6 +1,6 @@
 NAME := osproject
 CXX := i686-elf-gcc
-CXXFLAGS := -ffreestanding -O2 -Wall -Wextra -nostdlib -fno-exceptions -Isrc
+CXXFLAGS := -ffreestanding -O2 -Wall -Wextra -nostdlib -fno-exceptions -isystem src
 AS := nasm
 ASFLAGS := -f elf
 LDFLAGS := 
@@ -8,13 +8,13 @@ LDFLAGS :=
 SRC_DIR := src
 BUILD_DIR := dst
 OBJS := $(BUILD_DIR)/kernel_main.c.o \
-	$(BUILD_DIR)/random_gen.c.o \
+		$(BUILD_DIR)/random_gen.c.o \
         $(BUILD_DIR)/boot.o \
 	    $(BUILD_DIR)/gdt_flush.s.o \
  	    $(BUILD_DIR)/gdt.c.o \
  	    $(BUILD_DIR)/idt.c.o \
  	    $(BUILD_DIR)/common.c.o \
- 	    $(BUILD_DIR)/gdt_flush.s.o
+ 	    $(BUILD_DIR)/terminal.c.o 
 
 all: $(NAME).bin
 
@@ -36,13 +36,14 @@ $(BUILD_DIR)/gdt_flush.s.o: $(SRC_DIR)/kernel/desc_tables/gdt_flush.s
 $(BUILD_DIR)/gdt.c.o: $(SRC_DIR)/kernel/desc_tables/gdt.c $(SRC_DIR)/kernel/desc_tables/gdt.h
 	$(CXX) -c $(SRC_DIR)/kernel/desc_tables/gdt.c $(CXXFLAGS) -o $(BUILD_DIR)/gdt.c.o
 
-$(BUILD_DIR)/common.c.o: $(SRC_DIR)/common.c $(SRC_DIR)/common.h
-	$(CXX) -c $(SRC_DIR)/common.c $(CXXFLAGS) -o $(BUILD_DIR)/common.c.o
+$(BUILD_DIR)/common.c.o: $(SRC_DIR)/kernel/common.c $(SRC_DIR)/kernel/common.h
+	$(CXX) -c $(SRC_DIR)/kernel/common.c $(CXXFLAGS) -o $(BUILD_DIR)/common.c.o
 
-$(BUILD_DIR)/dt.c.o: $(SRC_DIR)/desc_tables/idt.c $(SRC_DIR)/desc_tables/idt.h
-	$(CXX) -c $(SRC_DIR)/desc_tables/idt.c $(CXXFLAGS) -o $(BUILD_DIR)/idt.c.o
+$(BUILD_DIR)/idt.c.o: $(SRC_DIR)/kernel/desc_tables/idt.c $(SRC_DIR)/kernel/desc_tables/idt.h
+	$(CXX) -c $(SRC_DIR)/kernel/desc_tables/idt.c $(CXXFLAGS) -o $(BUILD_DIR)/idt.c.o
 
-
+$(BUILD_DIR)/terminal.c.o: $(SRC_DIR)/kernel/terminal/terminal.c $(SRC_DIR)/kernel/terminal/terminal.h
+	$(CXX) -c $(SRC_DIR)/kernel/terminal/terminal.c $(CXXFLAGS) -o $(BUILD_DIR)/terminal.c.o
 
 isomake:
 	mkdir -p iso/boot/grub/
@@ -60,7 +61,9 @@ runiso:
 		-cdrom $(NAME).iso
 
 runkernel:
-	qemu-system-i386 -kernel $(NAME).bin
+	qemu-system-i386 \
+	-enable-kvm \
+	-kernel $(NAME).bin
 
 clean:
 	rm -rf $(NAME).bin $(BUILD_DIR)/*

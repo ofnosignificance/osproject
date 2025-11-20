@@ -1,4 +1,6 @@
 #pragma once
+#include <stdint.h>
+#include <stddef.h>
 
 #define VGA_WIDTH   80
 #define VGA_HEIGHT  25
@@ -23,6 +25,8 @@ enum vga_color {
 	VGA_COLOR_WHITE = 15,
 };
 
+inline uint8_t vga_entry_color(enum vga_color fg, enum vga_color bg);
+inline uint16_t vga_entry(unsigned char uc, uint8_t color);
 void terminal_initialize(void);
 void check_space_left(void);
 void terminal_setcolor(uint8_t color);
