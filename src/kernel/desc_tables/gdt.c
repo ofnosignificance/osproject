@@ -30,6 +30,7 @@ void set_entry(int32_t i, uint32_t base, uint32_t limit, int32_t flags)
 void init_gdt(void)
 {
   gp.ptr = &gdt;
+  gp.limit = sizeof(gdt[5]) - 1;
   _disable_int();
   set_entry(0, 0, 0, 0);
   set_entry(1, 0, 0xfffff, GDT_FLAG_SEGMENT | GDT_FLAG_32_BIT |
