@@ -10,7 +10,7 @@ BUILD_DIR := dst
 OBJS := $(BUILD_DIR)/kernel_main.c.o \
 		$(BUILD_DIR)/random_gen.c.o \
         $(BUILD_DIR)/boot.o \
-	    $(BUILD_DIR)/gdt_flush.s.o \
+		$(BUILD_DIR)/gdt_helper.s.o \
  	    $(BUILD_DIR)/gdt.c.o \
  	    $(BUILD_DIR)/idt.c.o \
  	    $(BUILD_DIR)/common.c.o \
@@ -30,8 +30,8 @@ $(BUILD_DIR)/random_gen.c.o: $(SRC_DIR)/kernel/misc/random_gen.c $(SRC_DIR)/kern
 $(BUILD_DIR)/boot.o: $(SRC_DIR)/boot.s
 	$(AS) $(ASFLAGS) $(SRC_DIR)/boot.s -o $(BUILD_DIR)/boot.o
 
-$(BUILD_DIR)/gdt_flush.s.o: $(SRC_DIR)/kernel/desc_tables/gdt_flush.s
-	$(AS) $(ASFLAGS) $(SRC_DIR)/kernel/desc_tables/gdt_flush.s -o $(BUILD_DIR)/gdt_flush.s.o
+$(BUILD_DIR)/gdt_helper.s.o: $(SRC_DIR)/kernel/desc_tables/gdt_helper.s
+	$(AS) $(ASFLAGS) $(SRC_DIR)/kernel/desc_tables/gdt_helper.s -o $(BUILD_DIR)/gdt_helper.s.o
 
 $(BUILD_DIR)/gdt.c.o: $(SRC_DIR)/kernel/desc_tables/gdt.c $(SRC_DIR)/kernel/desc_tables/gdt.h
 	$(CXX) -c $(SRC_DIR)/kernel/desc_tables/gdt.c $(CXXFLAGS) -o $(BUILD_DIR)/gdt.c.o

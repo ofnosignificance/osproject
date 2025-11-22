@@ -35,3 +35,4 @@ void terminal_putchar(char c);
 void kwritechar(const char* data, size_t size); 
 void kwrite(const char* data);
 void kerr(const char* data);
+void klog(const char* data);

@@ -1,6 +1,8 @@
-#include <kernel/terminal/terminal.h>
-#include <kernel/kernel_main.h>
 #include <kernel/common.h>
+#include <kernel/kernel_main.h>
+#include <kernel/terminal/terminal.h>
+
+
 
 size_t terminal_row;
 size_t terminal_column;

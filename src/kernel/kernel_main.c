@@ -12,8 +12,5 @@
 void kernel_main(void) 
 {	
 	terminal_initialize();
-	gdt_init();
-	kerr("hello world\n");
-	kwrite("hello world\n");
-	kerr("hello world\n");
+	init_gdt();
 }
