@@ -3,7 +3,7 @@
 #include <stdint.h>
 
 extern void _disable_int();
-extern void _load_gdt();
+extern void _flush_gdt();
 
 typedef struct {
   uint16_t limit_low;

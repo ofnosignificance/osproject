@@ -3,7 +3,7 @@ CXX := i686-elf-gcc
 CXXFLAGS := -ffreestanding -O2 -Wall -Wextra -nostdlib -fno-exceptions -isystem src
 AS := nasm
 ASFLAGS := -f elf
-LDFLAGS := 
+LDFLAGS := -Ttext 0x1000
 
 SRC_DIR := src
 BUILD_DIR := dst
@@ -19,7 +19,7 @@ OBJS := $(BUILD_DIR)/kernel_main.c.o \
 all: $(NAME).bin
 
 $(NAME).bin: $(OBJS)
-	$(CXX) -T linker.ld -o $(NAME).bin $(CXXFLAGS) $(OBJS) -lgcc
+	$(CXX) -T linker.ld -o $(NAME).bin $(CXXFLAGS) $(OBJS) -lgcc $(LDFLAGS)
 
 $(BUILD_DIR)/kernel_main.c.o: $(SRC_DIR)/kernel/kernel_main.c $(SRC_DIR)/kernel/kernel_main.h
 	$(CXX) -c $(SRC_DIR)/kernel/kernel_main.c $(CXXFLAGS) -o $(BUILD_DIR)/kernel_main.c.o

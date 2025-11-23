@@ -18,7 +18,6 @@ gdt_ptr_t gp;
 
 void set_entry(int32_t i, uint32_t base, uint32_t limit, int32_t flags)
 {
-  _disable_int();
   gdt[i].limit_low = limit & 0xffffLL;
   gdt[i].base_low |= (base & 0xffffffLL) << 16;
   gdt[i].base_middle |= (flags & 0xffLL) << 40;
@@ -29,9 +28,9 @@ void set_entry(int32_t i, uint32_t base, uint32_t limit, int32_t flags)
 
 void init_gdt(void)
 {
+  _disable_int();
   gp.ptr = &gdt;
   gp.limit = sizeof(gdt[5]) - 1;
-  _disable_int();
   set_entry(0, 0, 0, 0);
   set_entry(1, 0, 0xfffff, GDT_FLAG_SEGMENT | GDT_FLAG_32_BIT |
     GDT_FLAG_CODESEG | GDT_FLAG_4K_GRAN | GDT_FLAG_PRESENT);
@@ -42,5 +41,6 @@ void init_gdt(void)
   set_entry(4, 0, 0xfffff, GDT_FLAG_SEGMENT | GDT_FLAG_32_BIT |
     GDT_FLAG_DATASEG | GDT_FLAG_4K_GRAN | GDT_FLAG_PRESENT | GDT_FLAG_RING3);
 
-    _load_gdt();
+
+
 }
