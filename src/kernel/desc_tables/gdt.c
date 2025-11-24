@@ -13,10 +13,10 @@
 #define GDT_FLAG_4K_GRAN 0x800
 #define GDT_FLAG_32_BIT  0x400
 
-gdt_entry_t gdt[5];
-gdt_ptr_t gp;
+static gdt_entry_t gdt[5];
+static gdt_ptr_t gp;
 
-void set_entry(int32_t i, uint32_t base, uint32_t limit, int32_t flags)
+void gdt_set_entry(int32_t i, uint32_t base, uint32_t limit, int32_t flags)
 {
   gdt[i].limit_low = limit & 0xffffLL;
   gdt[i].base_low |= (base & 0xffffffLL) << 16;
@@ -31,16 +31,14 @@ void init_gdt(void)
   _disable_int();
   gp.ptr = &gdt;
   gp.limit = sizeof(gdt[5]) - 1;
-  set_entry(0, 0, 0, 0);
-  set_entry(1, 0, 0xfffff, GDT_FLAG_SEGMENT | GDT_FLAG_32_BIT |
+  gdt_set_entry(0, 0, 0, 0);
+  gdt_set_entry(1, 0, 0xfffff, GDT_FLAG_SEGMENT | GDT_FLAG_32_BIT |
     GDT_FLAG_CODESEG | GDT_FLAG_4K_GRAN | GDT_FLAG_PRESENT);
-  set_entry(2, 0, 0xfffff, GDT_FLAG_SEGMENT | GDT_FLAG_32_BIT |
+  gdt_set_entry(2, 0, 0xfffff, GDT_FLAG_SEGMENT | GDT_FLAG_32_BIT |
     GDT_FLAG_DATASEG | GDT_FLAG_4K_GRAN | GDT_FLAG_PRESENT);
-  set_entry(3, 0, 0xfffff, GDT_FLAG_SEGMENT | GDT_FLAG_32_BIT |
+  gdt_set_entry(3, 0, 0xfffff, GDT_FLAG_SEGMENT | GDT_FLAG_32_BIT |
     GDT_FLAG_CODESEG | GDT_FLAG_4K_GRAN | GDT_FLAG_PRESENT | GDT_FLAG_RING3);
-  set_entry(4, 0, 0xfffff, GDT_FLAG_SEGMENT | GDT_FLAG_32_BIT |
+  gdt_set_entry(4, 0, 0xfffff, GDT_FLAG_SEGMENT | GDT_FLAG_32_BIT |
     GDT_FLAG_DATASEG | GDT_FLAG_4K_GRAN | GDT_FLAG_PRESENT | GDT_FLAG_RING3);
-
-
-
+  klog("The GDT is loaded.\n");
 }

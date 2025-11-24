@@ -19,5 +19,5 @@ typedef struct {
     void* ptr;
 } __attribute__((packed)) gdt_ptr_t;
 
-void set_entry(int32_t i, uint32_t base, uint32_t limit, int32_t flags);
+void gdt_set_entry(int32_t i, uint32_t base, uint32_t limit, int32_t flags);
 void init_gdt(void);
