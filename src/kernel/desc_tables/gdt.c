@@ -13,8 +13,8 @@
 #define GDT_FLAG_4K_GRAN 0x800
 #define GDT_FLAG_32_BIT  0x400
 
-static gdt_entry_t gdt[5];
-static gdt_ptr_t gp;
+gdt_entry_t gdt[5];
+gdt_ptr_t gp;
 
 void gdt_set_entry(int32_t i, uint32_t base, uint32_t limit, int32_t flags)
 {
@@ -41,4 +41,6 @@ void init_gdt(void)
   gdt_set_entry(4, 0, 0xfffff, GDT_FLAG_SEGMENT | GDT_FLAG_32_BIT |
     GDT_FLAG_DATASEG | GDT_FLAG_4K_GRAN | GDT_FLAG_PRESENT | GDT_FLAG_RING3);
   klog("The GDT is loaded.\n");
+  _flush_gdt();
+  klog("The segments registers were reloaded");
 }

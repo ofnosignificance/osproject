@@ -2,6 +2,31 @@
 
 #include <stdint.h>
 
+extern _int_handler();
+
+const char* exception_names = [
+	"Divide by zero",
+	"Debug",
+	"Non-maskable interrrupt",
+	"Breakpoint",
+	"Into detected overflow",
+	"Out of bounds",
+	"Invalid opcode",
+	"No coprocessor",
+	"Double fault",
+	"Copressor segment overrrun",
+	"Bad TSS",
+	"Segment not present",
+	"Stack fault",
+	"General protecton fault"
+	"Page fault",
+	"Unknown interrupt",
+	"Copressor fault",
+	"Alignment check",
+	"Machine check",
+	"SIMD Floating-Point",
+];
+
 typedef struct {
 	uint16_t offset_low;
 	uint16_t selector;

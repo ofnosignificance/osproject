@@ -1,3 +1,5 @@
+extern _int_handler
+
 %macro global_int 1
     %rep %0
         global int%1
@@ -9,7 +11,7 @@
         cli
         push byte 0
         push byte %1
-        jmp int_handler
+        jmp _int_handler
     %endrep
 %endmacro
 
