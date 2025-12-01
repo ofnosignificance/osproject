@@ -32,3 +32,23 @@ void serial_init()
 
   outb(COM1 + 4, 0x0F); 
 }
+
+uint32_t serial_check_transmit() 
+{
+  return inb(COM1 + 5) & 0x20;
+}
+
+void serial_send_char(char a) 
+{
+  while(serial_check_transmit() == 0);
+  outb(COM1, a);
+}
+
+void serial_send_string(char* a)
+{
+  size_t i = 0;
+  while(a[i] != '\0') {
+    serial_send_char(a[i]);
+    i++;
+  }
+}

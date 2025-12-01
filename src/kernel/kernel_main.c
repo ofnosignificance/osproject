@@ -15,5 +15,5 @@ void kernel_main(void)
 	init_gdt();
 
 	serial_init();
-	outb(COM1, 'A');
+	serial_send_string("test"); 
 }
