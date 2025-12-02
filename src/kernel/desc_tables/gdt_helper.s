@@ -8,6 +8,7 @@ _disable_int:
   ret
 
 _flush_gdt:
+  lgdt [gp]
   jmp 0x08:.reload_cs
 
 .reload_cs:
