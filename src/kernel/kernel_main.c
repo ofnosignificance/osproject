@@ -11,10 +11,6 @@
 
 void kernel_main(void) 
 {	
-  serial_init();
-  serial_send_string("test");
-  while(1);
 	terminal_initialize();
   init_gdt();
-
 }

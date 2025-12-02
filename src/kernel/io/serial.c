@@ -40,7 +40,7 @@ uint32_t serial_check_transmit()
 
 void serial_send_char(char a) 
 {
-//  while(serial_check_transmit() == 0);
+  while(serial_check_transmit() == 0);
   outb(COM1, a);
 }
 

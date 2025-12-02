@@ -1,9 +1,9 @@
 NAME := osproject
-CXX := i686-elf-gcc
-CXXFLAGS := -ffreestanding -O2 -Wall -Wextra -nostdlib -fno-exceptions -isystem src -I src/libc/include
+CC := i686-elf-gcc
+CCFLAGS := -ffreestanding -O2 -Wall -Wextra -nostdlib -fno-exceptions -isystem src -I src/libc/include
 AS := nasm
 ASFLAGS := -f elf
-LDFLAGS := 
+LDFLAGS := -T linker.ld
 
 SRC_DIR := src
 BUILD_DIR := dst
@@ -25,34 +25,34 @@ $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
 
 $(NAME).bin: $(OBJS)
-	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
+	$(CC) $(CCFLAGS) -o $@ $^ $(LDFLAGS)
 
 $(BUILD_DIR)/boot.s.o: $(SRC_DIR)/boot.s
 	$(AS) $(ASFLAGS) $< -o $@ 
 
 $(BUILD_DIR)/%.c.o: $(SRC_DIR)/kernel/%.c
-	$(CXX) $(CXXFLAGS) -c -o $@ $<
+	$(CC) $(CCFLAGS) -c -o $@ $<
 
 $(BUILD_DIR)/%.c.o: $(SRC_DIR)/kernel/desc_tables/%.c
-	$(CXX) $(CXXFLAGS) -c -o $@ $<
+	$(CC) $(CCFLAGS) -c -o $@ $<
 
 $(BUILD_DIR)/%.s.o: $(SRC_DIR)/kernel/desc_tables/%.s
 	$(AS) $(ASFLAGS) $< -o $@ 
 
 $(BUILD_DIR)/%.c.o: $(SRC_DIR)/kernel/misc/%.c
-	$(CXX) $(CXXFLAGS) -c -o $@ $<
+	$(CC) $(CCFLAGS) -c -o $@ $<
 
 $(BUILD_DIR)/%.c.o: $(SRC_DIR)/libc/string/%.c
-	$(CXX) $(CXXFLAGS) -c -o $@ $<
+	$(CC) $(CCFLAGS) -c -o $@ $<
 
 $(BUILD_DIR)/%.s.o: $(SRC_DIR)/kernel/%.s
 	$(AS) $(ASFLAGS) -o $@ $<
 
 $(BUILD_DIR)/%.c.o: $(SRC_DIR)/kernel/terminal/%.c
-	$(CXX) $(CXXFLAGS) -c -o $@ $<
+	$(CC) $(CCFLAGS) -c -o $@ $<
 
 $(BUILD_DIR)/%.c.o: $(SRC_DIR)/kernel/io/%.c
-	$(CXX) $(CXXFLAGS) -c -o $@ $<
+	$(CC) $(CCFLAGS) -c -o $@ $<
 
 isomake:
 	mkdir -p iso/boot/grub/

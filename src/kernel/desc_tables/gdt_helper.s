@@ -4,18 +4,17 @@ global _flush_gdt
 extern gp
 
 _disable_int:
-    cli
-    ret
+  cli
+  ret
 
 _flush_gdt:
-    lgdt [gp]
-    jmp 0x08:_reload_segments
+  jmp 0x08:.reload_cs
 
-_reload_segments:
-    mov ax, 0x10
-    mov ds, ax
-    mov es, ax
-    mov fs, ax
-    mov gs, ax
-    mov ss, ax
-    ret
+.reload_cs:
+  mov ax, 0x10
+  mov ds, ax
+  mov es, ax
+  mov fs, ax
+  mov gs, ax
+  mov ss, ax
+  ret
