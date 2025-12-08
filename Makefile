@@ -12,8 +12,9 @@ OBJS := $(BUILD_DIR)/kernel_main.c.o \
         $(BUILD_DIR)/boot.s.o \
         $(BUILD_DIR)/gdt_helper.s.o \
         $(BUILD_DIR)/gdt.c.o \
-        $(BUILD_DIR)/int.s.o \
-        $(BUILD_DIR)/idt_helper.s.o \
+        $(BUILD_DIR)/idt.c.o \
+	$(BUILD_DIR)/int.c.o \
+        $(BUILD_DIR)/int_helper.s.o \
 	$(BUILD_DIR)/serial.c.o \
         $(BUILD_DIR)/common.c.o \
         $(BUILD_DIR)/terminal.c.o \
