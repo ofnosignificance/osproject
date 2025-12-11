@@ -21,5 +21,5 @@ typedef struct {
 
 void gdt_set_entry(int32_t i, uint32_t base, uint32_t limit,
 uint32_t access, uint32_t granularity);
-void init_gdt(void);
+void gdt_init(void);
 

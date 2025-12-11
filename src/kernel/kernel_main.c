@@ -8,11 +8,14 @@
 #include <kernel/desc_tables/idt.h>
 #include <kernel/kernel_main.h>
 #include <kernel/io/serial.h>
-
+#include <kernel/drivers/keyboard.h>
 
 void kernel_main(void) 
 {	
 	terminal_initialize();
-  init_gdt();
+  serial_init();
+  gdt_init();
   idt_init();
+  __asm__ volatile("sti");
+  keyb_init();
 }

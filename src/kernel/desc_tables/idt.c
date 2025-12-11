@@ -1,5 +1,7 @@
 #include <kernel/desc_tables/idt.h>
+#include <kernel/io/serial.h>
 #include <string.h>
+#include <stdint.h>
 
 #define IDT_ENTRY_NUM 256
 
@@ -11,8 +13,8 @@ void idt_set_entry(uint8_t i, uint32_t base, uint32_t selector,
 uint8_t type_attributes)
 {
 	idt_entry[i].offset_low = base & 0xffff;
-	idt_entry[i].offset_high = (base >> 16) & 0xffff;
-	idt_entry[i].selector = selector;
+	idt_entry[i].offset_high = (base >> 16) & 0xffff; 
+  idt_entry[i].selector = selector;
 	idt_entry[i].zero = 0;
 	idt_entry[i].type_attributes = type_attributes;
 }
@@ -73,6 +75,7 @@ void idt_init()
   idt_set_entry(31, (uint32_t)isr31, 0x08, 0x8e);
   
   pics_init();
+
   idt_set_entry(32, (uint32_t)irq0, 0x08, 0x8e);
   idt_set_entry(33, (uint32_t)irq1, 0x08, 0x8e);
   idt_set_entry(34, (uint32_t)irq2, 0x08, 0x8e);

@@ -1,5 +1,7 @@
 #pragma once
-
+#include <kernel/desc_tables/idt.h>
+#include <kernel/io/serial.h>
+#include <string.h>
 #include <stdint.h>
 
 extern void _int_handler();

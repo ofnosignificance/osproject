@@ -1,6 +1,5 @@
 #include <kernel/desc_tables/int.h>
 #include <kernel/desc_tables/idt.h>
-
 typedef void (*isr_t)(registers_t*);
 
 isr_t int_handlers[256];
@@ -47,4 +46,9 @@ void irq_handler(registers_t* registers)
   if(registers->int_num < 40) {
     outb(0xa0, 0x20);
   }
+}
+
+void register_int_handler(uint8_t n, isr_t handler)
+{
+  int_handlers[n] = handler; 
 }

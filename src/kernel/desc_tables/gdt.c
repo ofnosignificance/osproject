@@ -21,7 +21,7 @@ uint32_t access, uint32_t granularity)
   gdt[i].granularity = granularity & 0xf0;
 }
 
-void init_gdt(void)
+void gdt_init(void)
 {
   _disable_int();
   gp.ptr = &gdt;

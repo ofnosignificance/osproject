@@ -2,17 +2,6 @@
 #include <kernel/terminal/terminal.h>
 #include <stdint.h>
 
-extern inline unsigned char inb(uint16_t port)
-{
-  unsigned char data = 0;
-  __asm__ __volatile__ ("inb %%dx, %%al" : "=a" (data) : "d" (port));
-  return data;
-}
-
-extern inline void outb(uint16_t port, unsigned char data)
-{
-  __asm__ __volatile__ ("outb %%al, %%dx" :: "a" (data),"d" (port));
-}
 
 void serial_init()
 {

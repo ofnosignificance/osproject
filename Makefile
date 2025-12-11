@@ -8,6 +8,7 @@ LDFLAGS := -T linker.ld
 SRC_DIR := src
 BUILD_DIR := dst
 OBJS := $(BUILD_DIR)/kernel_main.c.o \
+	$(BUILD_DIR)/serial.c.o \
 	$(BUILD_DIR)/random_gen.c.o \
         $(BUILD_DIR)/boot.s.o \
         $(BUILD_DIR)/gdt_helper.s.o \
@@ -15,10 +16,10 @@ OBJS := $(BUILD_DIR)/kernel_main.c.o \
         $(BUILD_DIR)/idt.c.o \
 	$(BUILD_DIR)/int.c.o \
         $(BUILD_DIR)/int_helper.s.o \
-	$(BUILD_DIR)/serial.c.o \
         $(BUILD_DIR)/common.c.o \
         $(BUILD_DIR)/terminal.c.o \
         $(BUILD_DIR)/memset.c.o \
+	$(BUILD_DIR)/keyboard.c.o 
 
 all: $(BUILD_DIR) $(NAME).bin
 
@@ -55,7 +56,10 @@ $(BUILD_DIR)/%.c.o: $(SRC_DIR)/kernel/terminal/%.c
 $(BUILD_DIR)/%.c.o: $(SRC_DIR)/kernel/io/%.c
 	$(CC) $(CCFLAGS) -c -o $@ $<
 
-isomake:
+$(BUILD_DIR)/%.c.o: $(SRC_DIR)/kernel/drivers/%.c
+	$(CC) $(CCFLAGS) -c -o $@ $<
+
+somake:
 	mkdir -p iso/boot/grub/
 	cp $(NAME).bin iso/boot/$(NAME)
 	echo 'menuentry "$(NAME)" {' >> iso/boot/grub.cfg
