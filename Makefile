@@ -10,16 +10,16 @@ BUILD_DIR := dst
 OBJS := $(BUILD_DIR)/kernel_main.c.o \
 	$(BUILD_DIR)/serial.c.o \
 	$(BUILD_DIR)/random_gen.c.o \
-        $(BUILD_DIR)/boot.s.o \
-        $(BUILD_DIR)/gdt_helper.s.o \
-        $(BUILD_DIR)/gdt.c.o \
-        $(BUILD_DIR)/idt.c.o \
+	$(BUILD_DIR)/boot.s.o \
+	$(BUILD_DIR)/gdt_helper.s.o \
+	$(BUILD_DIR)/gdt.c.o \
+	$(BUILD_DIR)/idt.c.o \
 	$(BUILD_DIR)/int.c.o \
-        $(BUILD_DIR)/int_helper.s.o \
-        $(BUILD_DIR)/common.c.o \
-        $(BUILD_DIR)/terminal.c.o \
-        $(BUILD_DIR)/memset.c.o \
-	$(BUILD_DIR)/keyboard.c.o 
+	$(BUILD_DIR)/int_helper.s.o \
+	$(BUILD_DIR)/common.c.o \
+	$(BUILD_DIR)/tty.c.o \
+	$(BUILD_DIR)/memset.c.o
+#	$(BUILD_DIR)/keyboard.c.o 
 
 all: $(BUILD_DIR) $(NAME).bin
 
@@ -50,9 +50,6 @@ $(BUILD_DIR)/%.c.o: $(SRC_DIR)/libc/string/%.c
 $(BUILD_DIR)/%.s.o: $(SRC_DIR)/kernel/%.s
 	$(AS) $(ASFLAGS) -o $@ $<
 
-$(BUILD_DIR)/%.c.o: $(SRC_DIR)/kernel/terminal/%.c
-	$(CC) $(CCFLAGS) -c -o $@ $<
-
 $(BUILD_DIR)/%.c.o: $(SRC_DIR)/kernel/io/%.c
 	$(CC) $(CCFLAGS) -c -o $@ $<
 
@@ -74,6 +71,9 @@ runiso:
 
 runkernel:
 	qemu-system-i386 -kernel $(NAME).bin
+
+rundebug:
+	qemu-system-i386 -kernel $(NAME).bin -s -S -monitor stdio
 
 clean:
 	rm -rf $(NAME).bin $(BUILD_DIR)/*

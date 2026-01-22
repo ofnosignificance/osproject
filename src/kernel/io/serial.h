@@ -1,5 +1,5 @@
 #pragma once
-#include <kernel/terminal/terminal.h>
+#include <kernel/tty.h>
 #include <stdint.h>
 
 #define COM1 0x3f8

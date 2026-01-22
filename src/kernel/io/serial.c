@@ -1,5 +1,5 @@
 #include <kernel/io/serial.h>
-#include <kernel/terminal/terminal.h>
+#include <kernel/tty.h>
 #include <stdint.h>
 
 

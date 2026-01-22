@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include <kernel/kernel_main.h>
 #include <kernel/desc_tables/gdt.h>
-#include <kernel/terminal/terminal.h>
+#include <kernel/tty.h>
 #include <kernel/io/serial.h>
 
 #define GDT_ENTRY_NUM 3

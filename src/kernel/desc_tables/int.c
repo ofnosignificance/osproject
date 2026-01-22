@@ -30,25 +30,25 @@ const char* exception_names[] = {
 
 void isr_handler(registers_t* registers)
 {
-  kerr(exception_names[registers->int_num]);
-  kerr("\n");
+	kerr(exception_names[registers->int_num]);
+	kerr("\n");
 }
 
 void irq_handler(registers_t* registers)
 {
-  if(int_handlers[registers->int_num] != 0) {
-    isr_t handler = int_handlers[registers->int_num];
-    handler(registers);
-  }
+	if(int_handlers[registers->int_num] != 0) {
+		isr_t handler = int_handlers[registers->int_num];
+		handler(registers);
+	}
 
-  outb(0x20, 0x20);
+	outb(0x20, 0x20);
   
-  if(registers->int_num < 40) {
-    outb(0xa0, 0x20);
-  }
+	if(registers->int_num < 40) {
+		outb(0xa0, 0x20);
+	}
 }
 
 void register_int_handler(uint8_t n, isr_t handler)
 {
-  int_handlers[n] = handler; 
+	int_handlers[n] = handler; 
 }
