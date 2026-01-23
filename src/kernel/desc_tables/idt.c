@@ -1,6 +1,6 @@
 #include <kernel/desc_tables/idt.h>
 #include <kernel/io/serial.h>
-#include <string.h>
+//#include <string.h>
 #include <stdint.h>
 
 #define IDT_ENTRY_NUM 256

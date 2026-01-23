@@ -3,19 +3,28 @@ global _load_gdt
 global _flush_gdt 
 extern gp
 
-_disable_int:
-  cli
-  ret
+gdtr dw 0
+    dq 0
 
-_flush_gdt:
-  lgdt [gp]
-  jmp 0x08:.reload_cs
+set_gdt:
+    mov [gdtr], di
+    mov [gdtr + 2], rsi
+    lgdt [gdtr]
+    ret
+    
+;; _disable_int:
+;;   cli
+;;   ret
 
-.reload_cs:
-  mov ax, 0x10
-  mov ds, ax
-  mov es, ax
-  mov fs, ax
-  mov gs, ax
-  mov ss, ax
-  ret
+;; _flush_gdt:
+;;   lgdt [gp]
+;;   jmp 0x08:.reload_cs
+
+;; .reload_cs:
+;;   mov ax, 0x10
+;;   mov ds, ax
+;;   mov es, ax
+;;   mov fs, ax
+;;   mov gs, ax
+;;   mov ss, ax
+;;   ret

@@ -1,8 +1,8 @@
-NAME := osproject
-CC := i686-elf-gcc
+NAME := kotorios
+CC := x86_64-elf-gcc
 CCFLAGS := -ffreestanding -O2 -Wall -Wextra -nostdlib -fno-exceptions -isystem src -I src/libc/include
 AS := nasm
-ASFLAGS := -f elf
+ASFLAGS := -f elf64
 LDFLAGS := -T linker.ld
 
 SRC_DIR := src
@@ -56,24 +56,15 @@ $(BUILD_DIR)/%.c.o: $(SRC_DIR)/kernel/io/%.c
 $(BUILD_DIR)/%.c.o: $(SRC_DIR)/kernel/drivers/%.c
 	$(CC) $(CCFLAGS) -c -o $@ $<
 
-somake:
+geniso:
 	mkdir -p iso/boot/grub/
-	cp $(NAME).bin iso/boot/$(NAME)
-	echo 'menuentry "$(NAME)" {' >> iso/boot/grub.cfg
-	echo '		multiboot /boot/$(NAME).bin"' >> iso/boot/grub.cfg
-	echo '		boot' >> iso/boot/grub.cfg
-	echo '}' >> iso/boot/grub/grub.cfg
-
-	grub-mkrescue --output=$(NAME).iso iso
+	cp $(NAME).bin iso/boot/$(NAME).bin
+	cp grub.cfg iso/boot/grub/grub.cfg
+	grub-mkrescue --output=kotorios.iso iso
+	rm -rf iso
 
 runiso:
-	qemu-system-i386 -cdrom $(NAME).iso
-
-runkernel:
-	qemu-system-i386 -kernel $(NAME).bin
-
-rundebug:
-	qemu-system-i386 -kernel $(NAME).bin -s -S -monitor stdio
+	qemu-system-x86_64 -cdrom $(NAME).iso
 
 clean:
 	rm -rf $(NAME).bin $(BUILD_DIR)/*
@@ -81,4 +72,4 @@ clean:
 	rm -f $(NAME).iso 
 
 
-.PHONY: all clean isomake boot
+.PHONY: all clean geniso boot
